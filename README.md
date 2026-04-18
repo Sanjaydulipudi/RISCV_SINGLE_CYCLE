@@ -91,41 +91,6 @@ All five operations occur in one cycle.
 
 ---
 
-# Project File Structure
-
-```text
-riscv-single-cycle-cpu/
-│
-├── src/
-│   ├── riscv_cpu_top.v
-│   ├── fetch_pc.v
-│   ├── fetch_next_pc.v
-│   ├── fetch_pc_select.v
-│   ├── instruction_mem.v
-│   ├── control_decoder.v
-│   ├── register_bank.v
-│   ├── immediate_extend.v
-│   ├── execute_alu_decoder.v
-│   ├── execute_alu.v
-│   ├── execute_branch_logic.v
-│   ├── data_memory.v
-│   └── writeback_mux.v
-│
-├── tb/
-│   ├── tb_riscv_cpu_top.v
-│   ├── tb_register_bank.v
-│   ├── tb_control_decoder.v
-│   ├── tb_execute_alu.v
-│
-├── screenshots/
-│   ├── waveform.png
-│   ├── schematic.png
-│
-└── README.md
-```
-
----
-
 # Module Description
 
 ---
