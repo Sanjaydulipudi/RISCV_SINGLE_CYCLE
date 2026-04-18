@@ -93,171 +93,94 @@ All five operations occur in one cycle.
 
 # Module Description
 
----
-
 ## 1. riscv_cpu_top.v
 
-Top-level processor module integrating all stages.
-
-### Responsibilities:
-
-* Connect all submodules
-* Route control/data signals
-* Manage instruction execution flow
+Top-level integration module of the processor. It connects all submodules such as fetch unit, control unit, register file, ALU, memory, branch logic, and writeback stage to form a complete single-cycle CPU.
 
 ---
 
 ## 2. fetch_pc.v
 
-Program Counter Register.
-
-### Function:
-
-Stores current instruction address.
-
-```text
-PC <= next_pc
-```
+Program Counter (PC) register module. It stores the current instruction address and updates it with the next PC value on every clock edge. It resets to zero during system reset.
 
 ---
 
 ## 3. fetch_next_pc.v
 
-PC Incrementer.
-
-### Function:
-
-```text
-PC + 4
-```
-
-Moves to next sequential instruction.
+PC incrementer module. It calculates the sequential next instruction address by adding 4 to the current PC value, since each RISC-V instruction is 32 bits (4 bytes).
 
 ---
 
 ## 4. fetch_pc_select.v
 
-PC Selection MUX.
-
-### Function:
-
-Selects next PC between:
-
-* Sequential PC+4
-* Branch target address
+PC selection multiplexer. It chooses the next PC source between normal sequential address (PC+4) and branch target address based on the branch_taken signal.
 
 ---
 
 ## 5. instruction_mem.v
 
-Instruction ROM storing machine code program.
-
-### Function:
-
-Outputs instruction based on PC address.
+Instruction memory module. It stores the machine code instructions of the program and outputs the instruction corresponding to the current PC address.
 
 ---
 
 ## 6. control_decoder.v
 
-Main Control Unit.
-
-### Generates:
-
-* reg_write
-* alu_src
-* mem_read
-* mem_write
-* mem_to_reg
-* branch
+Main control unit of the processor. It decodes the instruction opcode and generates control signals such as register write enable, ALU source select, memory read/write enable, memory-to-register select, and branch control.
 
 ---
 
 ## 7. register_bank.v
 
-32 x 32 Register File.
-
-### Features:
-
-* Two read ports
-* One write port
-* x0 always zero
+32 × 32 register file module. It contains 32 general-purpose registers with two read ports and one write port. Register x0 is permanently hardwired to zero.
 
 ---
 
 ## 8. immediate_extend.v
 
-Immediate Generator.
-
-### Supports:
-
-* I-Type
-* S-Type
-* B-Type immediates
+Immediate generator module. It extracts immediate values from different RISC-V instruction formats (I-type, S-type, B-type) and performs sign extension to 32 bits.
 
 ---
 
 ## 9. execute_alu_decoder.v
 
-ALU Control Unit.
-
-### Generates ALU operation code from:
-
-* opcode
-* funct3
-* funct7
+ALU control decoder module. It interprets funct3, funct7, and opcode fields of the instruction and generates the ALU operation code required for arithmetic or logical execution.
 
 ---
 
 ## 10. execute_alu.v
 
-Arithmetic Logic Unit.
-
-### Performs:
-
-* ADD
-* SUB
-* AND
-* OR
-* XOR
-* SLT
+Arithmetic Logic Unit (ALU). It performs arithmetic and logical operations such as addition, subtraction, AND, OR, XOR, and comparison based on the ALU control signal.
 
 ---
 
 ## 11. execute_branch_logic.v
 
-Branch Comparator.
-
-### Supports:
-
-* BEQ
-* BNE
-* BLT
-* BGE
-
-Outputs branch_taken signal.
+Branch decision module. It compares register operands and determines whether a branch condition is satisfied for instructions like BEQ, BNE, BLT, and BGE.
 
 ---
 
 ## 12. data_memory.v
 
-RAM for load/store instructions.
-
-### Supports:
-
-* Read data
-* Write data
+Data memory module used for load and store operations. It writes data into memory during store instructions and reads data during load instructions.
 
 ---
 
 ## 13. writeback_mux.v
 
-Writeback selector.
+Writeback multiplexer module. It selects whether the value written back to the register file comes from ALU result or data memory output.
 
-Selects:
+---
 
-* ALU Result
-* Memory Data
+## 14. tb_riscv_cpu_top.v
+
+Top-level testbench used to simulate and verify the complete CPU functionality including arithmetic, memory access, and branch execution.
+
+---
+
+## 15. Other Individual Testbenches
+
+Separate testbench files are used for validating each module independently such as ALU, register bank, control decoder, memory, and branch logic.
+
 
 ---
 
