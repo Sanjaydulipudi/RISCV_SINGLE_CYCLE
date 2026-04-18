@@ -386,22 +386,6 @@ The processor was simulated successfully in Xilinx Vivado.
 
 ---
 
-# Schematic
-
-Vivado RTL schematic confirms successful hardware generation.
-
-(Add screenshot here)
-
----
-
-# Waveform
-
-Simulation waveform validates processor timing behavior.
-
-(Add screenshot here)
-
----
-
 # Key Learning Outcomes
 
 This project provides practical understanding of:
